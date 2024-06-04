@@ -6,7 +6,6 @@ This repository contains a Dockerfile to create a Docker image for [LanguageTool
 > [LanguageTool](https://www.languagetool.org/) is an Open Source proofreading software for English, French, German, Polish, Russian, and [more than 20 other languages](https://languagetool.org/languages/). It finds many errors that a simple spell checker cannot detect.
 
 # Setup
-
 ## Setup using Docker Hub
 
 ```sh

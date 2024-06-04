@@ -14,7 +14,6 @@ RUN apt-get update -y \
     maven \
     unzip \
     xmlstarlet \
-
     # packages required for arm64-workaround
     build-essential \
     cmake \
@@ -49,8 +48,6 @@ RUN bash -c "arm64-workaround/hunspell.sh"
 
 WORKDIR /languagetool
 
-# Note: When changing the base image, verify that the hunspell.sh workaround is
-# downloading the matching version of `libhunspell`. The URL may need to change.
 FROM alpine:3.19.1
 
 RUN apk add --no-cache \
@@ -68,13 +65,15 @@ WORKDIR /LanguageTool
 
 RUN mkdir /nonexistent && touch /nonexistent/.languagetool.cfg
 
+# Copy the updated start.sh script
 COPY --chown=languagetool start.sh start.sh
+RUN chmod +x start.sh
 
 COPY --chown=languagetool config.properties config.properties
 
 USER languagetool
 
-HEALTHCHECK --timeout=10s --start-period=5s CMD curl --fail --data "language=en-US&text=a simple test" http://localhost:8010/v2/check || exit 1
+HEALTHCHECK --timeout=10s --start-period=5s CMD curl --fail --data "language=en-US&text=a simple test" http://localhost:${PORT}/v2/check || exit 1
 
 CMD [ "bash", "start.sh" ]
 
